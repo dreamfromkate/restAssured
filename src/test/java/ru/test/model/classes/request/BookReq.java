@@ -1,15 +1,14 @@
 package ru.test.model.classes.request;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 import ru.test.model.enums.Category;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
-@EqualsAndHashCode
-@ToString
+@Accessors(chain = true)
 public class BookReq {
+
     private String title;
     private String author;
     private String description;
@@ -25,5 +24,14 @@ public class BookReq {
         this.price = book.price;
         this.count = book.count;
         this.category = book.category;
+    }
+
+    public static BookReq defaultOf(){
+        return new BookReq("The Adventures of Tom Sawyer",
+                "Mark Twain",
+                "The story about Tom Sawyer.",
+                Category.Adventures,
+                10,
+                250);
     }
 }

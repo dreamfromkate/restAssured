@@ -7,13 +7,11 @@ import io.restassured.specification.ResponseSpecification;
 import ru.test.model.classes.request.BookReq;
 
 import static io.restassured.RestAssured.given;
+import static ru.test.apiHelper.BaseTest.props;
 
 public class BooksApi {
-
-    private final String URI = "http://localhost:8080/";
-
     public BooksApi(){
-        RestAssured.baseURI = URI;
+        RestAssured.baseURI = props.getProperty("uri");
     }
 
     public Response post (String endpoint, BookReq body){
@@ -26,8 +24,25 @@ public class BooksApi {
 
     public Response get (String endpoint){
         return given()
+                    .queryParam("perPage", 50)
                     .contentType(ContentType.JSON)
                 .when()
                     .get(endpoint);
+    }
+
+    public Response get (String endpoint, int path){
+        return given()
+                .contentType(ContentType.JSON)
+
+                .when()
+                    .get(endpoint, path);
+    }
+
+    public Response deleteAllBooks(String endpoint){
+        return given()
+                .contentType(ContentType.JSON)
+
+                .when()
+                    .delete(endpoint);
     }
 }

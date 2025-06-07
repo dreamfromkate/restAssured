@@ -1,18 +1,15 @@
 package ru.test.model.classes.response;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 import ru.test.model.classes.request.BookReq;
 import ru.test.model.enums.Category;
 
 import java.time.OffsetDateTime;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
-@ToString
-public class BookResp /*extends BookReq*/ {
+@Data
+public class BookResp {
+
     private int id;
     private String lastUpdated;
 
