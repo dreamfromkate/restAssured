@@ -1,42 +1,47 @@
-package ru.test.tests;
+package ru.test.tests.search;
 
-import io.qameta.allure.Description;
-import io.qameta.allure.Owner;
-import io.qameta.allure.Param;
-import io.qameta.allure.Story;
-import org.apache.commons.lang3.RandomStringUtils;
+import io.qameta.allure.*;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.DataProvider;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import ru.test.apiHelper.BaseTest;
 import ru.test.apiHelper.BooksOperations;
 import ru.test.model.classes.request.BookReq;
-import ru.test.model.classes.response.BookResp;
-import ru.test.model.enums.Category;
-
-import static io.qameta.allure.model.Parameter.Mode.HIDDEN;
 
 public class GetBooksTest extends BaseTest {
+    private int size = 5;
 
-    @Test(testName = "Проверка получения списка книг")
+    @Test(description = "Проверка получения списка книг")
+
+    @Epic("Магазин книг")
+    @Feature("Получение информации по книгам")
+    //@Story("Получение информации по всем книгам")
+
     @Description("Тест-кейс проверяет получение листа книг")
     @Owner("Сопова Екатерина Евгеньевна")
     public void testGetBooks(){
         new BooksOperations()
+                .getBooks(size,200);
+    }
+
+    @BeforeClass
+    @Description("Добавление книг в список")
+    private void addBooks(){
+        new BooksOperations()
                 .createBook(BookReq.defaultOf(), 201)
                 .createBook(BookReq.defaultOf(), 201)
                 .createBook(BookReq.defaultOf(), 201)
                 .createBook(BookReq.defaultOf(), 201)
-                .createBook(BookReq.defaultOf(), 201)
-                .getBooks(200, 5);
+                .createBook(BookReq.defaultOf(), 201);
     }
 
     @AfterClass
+    @Description("Очистка списка книг, после выполенния теста")
     private void clearBooksList(){
         new BooksOperations()
-                .getBooks(200)
+                .getBooks(size,200)
                 .deleteAllBooks(200)
-                .getEmptyListBooks();
+                .getBooks(size,404);
     }
 }
 
