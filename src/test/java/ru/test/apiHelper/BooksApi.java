@@ -5,6 +5,8 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import ru.test.model.classes.request.BookReq;
 
+import java.util.Map;
+
 import static io.restassured.RestAssured.given;
 import static ru.test.apiHelper.BaseTest.props;
 
@@ -47,7 +49,16 @@ public class BooksApi {
 
     public Response get (String endpoint){
         return given()
-                .queryParam("perPage", 100)
+                .queryParam("perPage", 25)
+                .contentType(ContentType.JSON)
+
+                .when()
+                .get(endpoint);
+    }
+
+    public Response get (String endpoint, Map<String, String> param){
+        return given()
+                .queryParams(param)
                 .contentType(ContentType.JSON)
 
                 .when()

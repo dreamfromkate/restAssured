@@ -41,7 +41,7 @@ public class UpdateTheBookPosTest extends BaseTest {
         new BooksOperations()
                 .getBooks(BookData.positive().length,200)
                 .deleteAllBooks(200)
-                .getBooks(BookData.positive().length,404);
+                .getBooks(404);
     }
 }
 

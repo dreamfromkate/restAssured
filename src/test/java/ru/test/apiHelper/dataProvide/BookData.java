@@ -34,24 +34,24 @@ public class BookData {
     @DataProvider
     public static Object[][] negative(){
         return new Object[][]{
-                {BookReq.defaultOf().setCount(-1), "с минимальной недопустимой границей у параметра количество"},
-                {BookReq.defaultOf().setPrice(-1), "с минимальной недопустимой границей у параметра цена"},
+                {BookReq.defaultOf().setAuthor("Двадцать").setTitle("Один").setCount(-1), "с минимальной недопустимой границей у параметра количество"},
+                {BookReq.defaultOf().setAuthor("Двадцатьодин").setTitle("Два").setPrice(-1), "с минимальной недопустимой границей у параметра цена"},
 
-                {BookReq.defaultOf().setTitle(RandomStringUtils.randomAlphabetic(2)), "с минимальной допустимой границей у параметра название"},
-                {BookReq.defaultOf().setTitle(RandomStringUtils.randomAlphabetic(257)), "с максимальной допустимой границей у параметра название"},
+                {BookReq.defaultOf().setAuthor("Двадцатьдва").setTitle(RandomStringUtils.randomAlphabetic(2)), "с минимальной допустимой границей у параметра название"},
+                {BookReq.defaultOf().setAuthor("Двадцатьтри").setTitle(RandomStringUtils.randomAlphabetic(257)), "с максимальной допустимой границей у параметра название"},
 
-                {BookReq.defaultOf().setAuthor(RandomStringUtils.randomAlphabetic(2)), "с минимальной допустимой границей у параметра автор"},
-                {BookReq.defaultOf().setAuthor(RandomStringUtils.randomAlphabetic(101)), "с максимальной допустимой границей у параметра автор"},
+                {BookReq.defaultOf().setAuthor("Двадцатьчетыре").setTitle("Пять").setAuthor(RandomStringUtils.randomAlphabetic(2)), "с минимальной допустимой границей у параметра автор"},
+                {BookReq.defaultOf().setAuthor("Двадцатьпять").setTitle("Шесть").setAuthor(RandomStringUtils.randomAlphabetic(101)), "с максимальной допустимой границей у параметра автор"},
 
-                {BookReq.defaultOf().setDescription(RandomStringUtils.randomAlphabetic(2)), "с минимальной допустимой границей у параметра описание"},
-                {BookReq.defaultOf().setDescription(RandomStringUtils.randomAlphabetic(513)), "с максимальной допустимой границей у параметра описание"},
+                {BookReq.defaultOf().setAuthor("Двадцатьшесть").setTitle("Семь").setDescription(RandomStringUtils.randomAlphabetic(2)), "с минимальной допустимой границей у параметра описание"},
+                {BookReq.defaultOf().setAuthor("Двадцатьсемь").setTitle("Восемь").setDescription(RandomStringUtils.randomAlphabetic(513)), "с максимальной допустимой границей у параметра описание"},
 
-                {BookReq.defaultOf().setCategory(Category.Unknown), "со значением категории не по умолчанию"},
+                {BookReq.defaultOf().setAuthor("Двадцатьвосемь").setTitle("Девять").setCategory(Category.Unknown), "со значением категории не по умолчанию"},
 
-                {BookReq.defaultOf().setAuthor(null), "без параметра автор"},
-                {BookReq.defaultOf().setCategory(null), "без параметра категория"},
-                {BookReq.defaultOf().setDescription(null), "без параметра описание"},
-                {BookReq.defaultOf().setTitle(null), "без зпараметра наименование"},
+                {BookReq.defaultOf().setAuthor("Двадцатьдевять").setTitle("Десять").setAuthor(null), "без параметра автор"},
+                {BookReq.defaultOf().setAuthor("Тридцать").setTitle("Одиннадцать").setCategory(null), "без параметра категория"},
+                {BookReq.defaultOf().setAuthor("Тридцатьодин").setTitle("Двенадцать").setDescription(null), "без параметра описание"},
+                {BookReq.defaultOf().setAuthor("Тридцатьдва").setTitle("Тринадцать").setTitle(null), "без зпараметра наименование"},
         };
     }
 }

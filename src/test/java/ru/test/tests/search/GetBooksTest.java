@@ -8,6 +8,9 @@ import ru.test.apiHelper.BaseTest;
 import ru.test.apiHelper.BooksOperations;
 import ru.test.model.classes.request.BookReq;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class GetBooksTest extends BaseTest {
     private int size = 5;
 
@@ -41,8 +44,27 @@ public class GetBooksTest extends BaseTest {
         new BooksOperations()
                 .getBooks(size,200)
                 .deleteAllBooks(200)
-                .getBooks(size,404);
+                .getBooks(404);
     }
+
+
+/*    @Test(description = "Проверка получения списка книг")
+
+    @Epic("Магазин книг")
+    @Feature("Получение информации по книгам")
+    //@Story("Получение информации по всем книгам")
+
+    @Description("Тест-кейс проверяет получение листа книг")
+    @Owner("Сопова Екатерина Евгеньевна")
+    public void testGetBooksWithParams(){
+        Map<String, String> param = new HashMap<String, String>();
+        param.put("perPage","10");
+        param.put("author","Mark Twain");
+        param.put("title","The Adventures of Tom Sawyer");
+
+        new BooksOperations()
+                .testTest(param);
+    }*/
 }
 
 

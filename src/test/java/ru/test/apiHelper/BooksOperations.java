@@ -1,5 +1,6 @@
 package ru.test.apiHelper;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
@@ -8,17 +9,18 @@ import ru.test.model.classes.request.BookReq;
 import ru.test.model.classes.response.BookResp;
 import ru.test.model.classes.response.BooksResp;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.Map;
+
 import static ru.test.apiHelper.BaseTest.*;
 
 public class BooksOperations{
 
     @Step("Добавление книги {discr}")
-    @Attachment(type = "application/json")
     public BookResp createBook (BookReq reqBook, String discr, int expectStatus){
         ValidatableResponse resp = api.post(Endpoints.ADD_BOOK, reqBook).then();
-
         int actualStatus = resp.extract().statusCode();
-
         checkStatus(actualStatus, expectStatus);
 
         if (actualStatus == 400){
@@ -30,6 +32,13 @@ public class BooksOperations{
                 .as(BookResp.class);
 
         checkBodyBook(respBook, reqBook);
+
+        checkDate(OffsetDateTime.parse(respBook.getLastUpdated()), OffsetDateTime.now(ZoneOffset.UTC ));
+
+        Assert.assertNotNull(respBook.getId());
+
+        Allure.addAttachment("Тело запроса","application/json", reqBook.toString());
+        Allure.addAttachment("Тело ответа","application/json", respBook.toString());
 
         return respBook;
     }
@@ -45,6 +54,13 @@ public class BooksOperations{
 
         checkBodyBook(respBook, reqBook);
 
+        checkDate(OffsetDateTime.parse(respBook.getLastUpdated()), OffsetDateTime.now(ZoneOffset.UTC ));
+
+        Assert.assertNotNull(respBook.getId());
+
+        Allure.addAttachment("Тело запроса","application/json", reqBook.toString());
+        Allure.addAttachment("Тело ответа","application/json", respBook.toString());
+
         return this;
     }
 
@@ -59,13 +75,19 @@ public class BooksOperations{
                 .as(BookResp.class);
 
         checkBodyBook(respBook, reqBook);
+        checkDate(OffsetDateTime.parse(respBook.getLastUpdated()), OffsetDateTime.now(ZoneOffset.UTC ));
+
+        Assert.assertNotNull(respBook.getId());
+
+        Allure.addAttachment("Тело запроса","application/json", reqBook.toString());
+        Allure.addAttachment("Тело ответа","application/json", respBook.toString());
 
         return respBook;
     }
 
     @Step("Получение информации о книге по ID")
     public BooksOperations getTheBook(BookResp reqBook, int expectStatus){
-        ValidatableResponse resp = api.get(Endpoints.GET_BOOK, reqBook.getId()).then();
+        ValidatableResponse resp = api.get(Endpoints.GET_BOOK, reqBook.getId()).then().log().all();
 
         int actualStatus = resp.extract().statusCode();
 
@@ -75,10 +97,15 @@ public class BooksOperations{
             BookResp respBook = resp.extract().as(BookResp.class);
 
             checkBodyBook(respBook, reqBook);
+            checkDate(OffsetDateTime.parse(respBook.getLastUpdated()), OffsetDateTime.now(ZoneOffset.UTC ));
 
             Assert.assertEquals(respBook.getId(), reqBook.getId());
             Assert.assertEquals(respBook.getLastUpdated(), reqBook.getLastUpdated());
+
+            Allure.addAttachment("Тело ответа","application/json", respBook.toString());
         }
+
+        Allure.addAttachment("Тело запроса","application/json", reqBook.toString());
 
         return this;
     }
@@ -102,13 +129,35 @@ public class BooksOperations{
 
         checkStatus(actualStatus, expectStatus);
 
-        if (actualStatus == 200){
-            BooksResp books = resp.extract().as(BooksResp.class);
+        BooksResp books = resp.extract().as(BooksResp.class);
 
-            Assert.assertEquals(books.getBooks().size(), books.getSize());
-            Assert.assertEquals(books.getBooks().size(), size);
-            Assert.assertEquals(books.getSize(), size);
-        }
+        Assert.assertEquals(books.getSize(), books.getBooks().size());
+        Assert.assertEquals(size,books.getBooks().size());
+        Assert.assertEquals(books.getSize(), size);
+
+        Allure.addAttachment("Тело ответа","application/json", books.toString());
+
+        return this;
+    }
+
+    @Step("Получение списка книг")
+    public BooksOperations getBooks(int expectStatus){
+        ValidatableResponse resp = api.get(Endpoints.GET_BOOKS).then();
+
+        int actualStatus = resp.extract().statusCode();
+
+        checkStatus(actualStatus, expectStatus);
+
+        return this;
+    }
+
+    @Step("Получение списка книг с применением фильтра")
+    public BooksOperations getBooks(int expectStatus, Map<String, String> param){
+        ValidatableResponse resp = api.get(Endpoints.GET_BOOKS, param).then();
+
+        int actualStatus = resp.extract().statusCode();
+
+        checkStatus(actualStatus, expectStatus);
 
         return this;
     }
@@ -141,7 +190,6 @@ public class BooksOperations{
     }
 
     @Step("Обновление книги {discr}")
-    @Attachment(type = "application/json")
     public BooksOperations updateTheBook (BookReq reqBook, BookResp defaultBook, String discr, int expectStatus){
         ValidatableResponse resp = api.updateTheBook(reqBook, Endpoints.PUT_BOOK, defaultBook.getId()).then();
         int actualStatus = resp.extract().statusCode();
@@ -157,9 +205,15 @@ public class BooksOperations{
                 .as(BookResp.class);
 
         checkBodyBook(respBook, reqBook);
+        checkDate(OffsetDateTime.parse(respBook.getLastUpdated()), OffsetDateTime.now(ZoneOffset.UTC ));
 
         Assert.assertNotEquals(respBook.getLastUpdated(), defaultBook.getLastUpdated());
         Assert.assertEquals(respBook.getId(), defaultBook.getId());
+
+        Allure.addAttachment("Исходная информация по книге","application/json", defaultBook.toString());
+
+        Allure.addAttachment("Тело запроса","application/json", reqBook.toString());
+        Allure.addAttachment("Тело ответа","application/json", respBook.toString());
 
         return this;
     }
@@ -178,11 +232,13 @@ public class BooksOperations{
 
         Assert.assertEquals(respBook.getLastUpdated(), defaultBook.getLastUpdated());
 
+        Allure.addAttachment("Исходная информация по книге","application/json", defaultBook.toString());
+        Allure.addAttachment("Тело ответа","application/json", respBook.toString());
+
         return this;
     }
 
     @Step("404 ошибка обновления книги")
-    @Attachment(type = "application/json")
     public BooksOperations updateTheBook (BookReq reqBook, BookResp defaultBook, int expectStatus){
         ValidatableResponse resp = api.updateTheBook(reqBook, Endpoints.PUT_BOOK, defaultBook.getId()+1).then();
         int actualStatus = resp.extract().statusCode();
@@ -193,7 +249,6 @@ public class BooksOperations{
     }
 
     @Step("400 ошибка обновления книги")
-    @Attachment(type = "application/json")
     public BooksOperations updateTheBook (BookReq reqBook, String id, int expectStatus){
         ValidatableResponse resp = api.updateTheBook(reqBook, Endpoints.PUT_BOOK, id).then();
         int actualStatus = resp.extract().statusCode();
@@ -205,9 +260,9 @@ public class BooksOperations{
 
 
 
-/*    @Step("Получение списка книг")
-    public BooksOperations testTest (){
-
+/*    @Step("Получение списка книг с применением фильтра")
+    public BooksOperations testTest (Map<String, String> param){
+        api.get(Endpoints.GET_BOOKS, param);
 
         return this;
     }*/
@@ -217,6 +272,11 @@ public class BooksOperations{
     }
 
     private void checkBodyBook(BookResp respBook, BookReq reqBook) {
+        OffsetDateTime lastUpdated = OffsetDateTime.parse(respBook.getLastUpdated());
+        OffsetDateTime now = OffsetDateTime.now(ZoneOffset.UTC );
+
+        checkDate(lastUpdated, now);
+
         Assert.assertEquals(respBook.getTitle(), reqBook.getTitle());
         Assert.assertEquals(respBook.getAuthor(), reqBook.getAuthor());
         Assert.assertEquals(respBook.getDescription(), reqBook.getDescription());
@@ -226,7 +286,19 @@ public class BooksOperations{
         Assert.assertEquals(respBook.getPrice(), reqBook.getPrice());
     }
 
+    private void checkDate(OffsetDateTime lastUpdated, OffsetDateTime now) {
+        Assert.assertEquals(lastUpdated.getYear(), now.getYear());
+        Assert.assertEquals(lastUpdated.getMonth(), now.getMonth());
+        Assert.assertEquals(lastUpdated.getDayOfMonth(), now.getDayOfMonth());
+
+        Assert.assertEquals(lastUpdated.getHour(), now.getHour());
+        Assert.assertEquals(lastUpdated.getMinute(), now.getMinute());
+    }
+
     private void checkBodyBook(BookResp respBook, BookResp reqBook) {
+        OffsetDateTime dateResp = OffsetDateTime.parse(respBook.getLastUpdated());
+        OffsetDateTime dateReq = OffsetDateTime.parse(reqBook.getLastUpdated());
+
         Assert.assertEquals(respBook.getTitle(), reqBook.getTitle());
         Assert.assertEquals(respBook.getAuthor(), reqBook.getAuthor());
         Assert.assertEquals(respBook.getDescription(), reqBook.getDescription());

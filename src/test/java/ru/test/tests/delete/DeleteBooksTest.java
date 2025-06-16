@@ -20,7 +20,7 @@ public class DeleteBooksTest extends BaseTest {
                 .createBook(BookReq.defaultOf(), 201)
                 .getBooks(1,200)
                 .deleteAllBooks(200)
-                .getBooks(1,404);
+                .getBooks(404);
     }
 }
 

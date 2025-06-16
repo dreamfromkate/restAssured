@@ -72,7 +72,7 @@ public class UpdateTheBookNegTest extends BaseTest {
         new BooksOperations()
                 .getBooks(BookData.negative().length+2,200)
                 .deleteAllBooks(200)
-                .getBooks(BookData.negative().length+2,404);
+                .getBooks(404);
     }
 
 }

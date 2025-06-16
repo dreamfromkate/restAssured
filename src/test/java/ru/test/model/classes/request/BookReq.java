@@ -34,4 +34,16 @@ public class BookReq {
                 10,
                 250);
     }
+
+    @Override
+    public String toString() {
+        return "BookReq{" +
+                "\n\ttitle = '" + title + '\'' +
+                "\n\tauthor = '" + author + '\'' +
+                "\n\tdescription = '" + description + '\'' +
+                "\n\tcategory = " + category +
+                "\n\tcount = " + count +
+                "\n\tprice = " + price +
+                "\n}";
+    }
 }

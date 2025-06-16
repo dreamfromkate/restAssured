@@ -8,6 +8,9 @@ import ru.test.apiHelper.dataProvide.BookData;
 import ru.test.model.classes.request.BookReq;
 import ru.test.model.classes.response.BookResp;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CreateBookNegTest extends BaseTest {
 
     @Test(dataProvider = "negative", dataProviderClass = BookData.class,
@@ -29,10 +32,15 @@ public class CreateBookNegTest extends BaseTest {
 
     @Owner("Сопова Екатерина Евгеньевна")
     public void testCreateBook(BookReq book, String discr){
+        Map<String, String> param = new HashMap<String, String>();
+
+        param.put("title", book.getTitle());
+        param.put("author", book.getAuthor());
+
         BooksOperations bookOper = new BooksOperations();
 
         BookResp respBook = bookOper.createBook(book, discr, 400);
-        bookOper.getBooks( BookData.negative().length,404);
+        bookOper.getBooks( 404, param);
 
     }
 

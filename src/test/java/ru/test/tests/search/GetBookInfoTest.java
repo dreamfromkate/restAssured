@@ -65,7 +65,7 @@ public class GetBookInfoTest extends BaseTest {
         new BooksOperations()
                 .getBooks(size,200)
                 .deleteAllBooks(200)
-                .getBooks(size,404);
+                .getBooks(404);
     }
 }
 

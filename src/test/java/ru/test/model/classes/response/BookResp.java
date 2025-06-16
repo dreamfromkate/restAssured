@@ -20,4 +20,24 @@ public class BookResp {
 
     private int count;
     private int price;
+
+    @Override
+    public String toString() {
+        return "BookResp {" +
+                "\n\tid = " + id +
+                "\n\tlastUpdated = '" + lastUpdated + '\'' +
+                "\n\ttitle = '" + title + '\'' +
+                "\n\tauthor = '" + author + '\'' +
+                "\n\tdescription = '" + description + '\'' +
+                "\n\tcategory = " + category +
+                "\n\tcount = " + count +
+                "\n\tprice = " + price +
+                "\n}";
+    }
+
+    /*@Override
+    public String toStringg(){
+        return "BookResp {" +
+                "id = " + this.;
+    }*/
 }
