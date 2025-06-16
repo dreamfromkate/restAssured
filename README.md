@@ -149,8 +149,8 @@ Content-type: application/json
 | Параметр | Тип данных|Обязательное поле |Описание |
 |:-----:|:-----------:|:-----:|:-----:|
 |title      | string| ДА |Название книги. Минимальная длина 3, максимальная длина 256.|
-|description   | string |ДА|Short description. Min length 3, max length 512.|
-|author   | string|ДА|Author of the book. Min length 3, max length 100.|
-|category   | string |ДА||
-|count   | integer |ДА||
-|price   | integer |ДА||
+|description   | string |ДА|Краткое описание. Минимальная длина 3, максимальная длина 512.|
+|author   | string|ДА|Автор книги. Минимальная длина 3, максимальная длина 100.|
+|category   | string |ДА|Жанр книги. Один из [Adventures, Detective, Horror, Thriller] |
+|count   | integer |ДА|Количество книг|
+|price   | integer |ДА|Цена за книгу|
